@@ -6,7 +6,7 @@ object:
 	@$(COMPILER) $(CFLAGS) main.cpp gpa.cpp
 
 compile: object
-	@$(COMPILER) $(LFLAGS) main main.o gpa.o
+	@$(COMPILER) $(LFLAGS) main.exe main.o gpa.o
 
 rights: compile
 	@chmod u+x main
