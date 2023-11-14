@@ -8,11 +8,11 @@ object:
 compile: object
 	@$(COMPILER) $(LFLAGS) main.exe main.o gpa.o
 
-rights: compile
-	@chmod u+x main
+#rights: compile
+#	@chmod u+x main.exe
 
-run: rights
-	@./main
+run: compile
+	@./main.exe
 
 clean:
-	@rm main main.o
+	@rm main.exe main.o

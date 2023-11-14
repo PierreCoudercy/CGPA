@@ -2,6 +2,7 @@
 #define GPA_H
 #include <map>
 #include <string>
+#include <iostream>
 
 class GPA{
 private:
@@ -37,8 +38,12 @@ public:
     void setTopic(std::string topic);
     void setGrade(std::string grade);
     void setCredit(double credit);
+    //OPERATOR
+    friend std::ostream& operator<<(std::ostream& os, const GPA& obj);
     //METHODS
     double calculate_GPA();
+    void print();
 };
+std::ostream& operator<<(std::ostream& os, const GPA& obj);
 
 #endif
