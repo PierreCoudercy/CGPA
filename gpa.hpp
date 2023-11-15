@@ -3,6 +3,7 @@
 #include <map>
 #include <string>
 #include <iostream>
+#include <sqlite3.h>
 
 class GPA{
 private:
@@ -42,7 +43,6 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const GPA& obj);
     //METHODS
     double calculate_GPA();
-    void print();
 };
 std::ostream& operator<<(std::ostream& os, const GPA& obj);
 

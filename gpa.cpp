@@ -1,6 +1,3 @@
-#include <iostream>
-#include <map>
-
 #include "gpa.hpp"
 
 GPA::GPA(std::string studentId, std::string topic, std::string grade, double credit){
@@ -19,8 +16,6 @@ void GPA::setStudentId(std::string studenId){this->studentId=studentId;}
 void GPA::setTopic(std::string topic){this->topic=topic;}
 void GPA::setGrade(std::string grade){this->grade=grade;}
 void GPA::setCredit(double credit){this->credit=credit;}
-
-void GPA::print(){}
 
 std::ostream& operator<<(std::ostream& os, const GPA& obj){
     return os << "|" << obj.studentId << "|" << obj.topic << "|" << obj.credit << "|" << obj.grade << "|" << std::endl;
