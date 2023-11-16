@@ -1,13 +1,24 @@
-COMPILER = g++
-CFLAGS = -Wall -c -std=c++17 -pthread -l sqlite3
+CXX = g++
+CFLAGS = -Wall -std=c++17 -pthread -l sqlite3
 LFLAGS = -o
+OBJ_DIR = obj/
+HEADS_DIR = headers/
+SRC_DIR = src/
+SRC = $(SRC_DIR)/gpa.cpp $(SRC_DIR)/main.cpp $(SRC_DIR)/student.cpp $(SRC_DIR)/uuid.cpp
 
-compile:
-	@$(COMPILER) $(CFLAGS) main.cpp gpa.cpp student.cpp uuid/uuid.cpp
-	@$(COMPILER) $(LFLAGS) main.exe main.o gpa.o student.o uuid.o
+OBJ = $(patsubst $(SRC)%.cpp,$(OBJS)/%.o,$(SRC))
+#DEP = $(patsubst $(SRC)%.cpp,$(OBJS)/%.o,%(SRC))
 
-run: compile
+all: run
+
+obj/%.o: src/%.cpp
+	$(CXX) -c -o $@ $(CFLAGS) $<
+
+main.exe: $(OBJ)
+	$(CXX) $(OBJ) $(LFLAGS) main.exe
+
+run: main.exe
 	@./main.exe
 
 clean:
-	@rm main.exe *.o
+	@rm main.exe obj/*.o

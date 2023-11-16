@@ -1,5 +1,5 @@
-# Created by https://www.toptal.com/developers/gitignore/api/database,c++
-# Edit at https://www.toptal.com/developers/gitignore?templates=database,c++
+# Created by https://www.toptal.com/developers/gitignore/api/c++,cmake,database
+# Edit at https://www.toptal.com/developers/gitignore?templates=c++,cmake,database
 
 ### C++ ###
 # Prerequisites
@@ -35,6 +35,23 @@
 *.out
 *.app
 
+### CMake ###
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
+
+### CMake Patch ###
+# External projects
+*-prefix/
+
 ### Database ###
 *.accdb
 *.db
@@ -45,4 +62,4 @@
 *.db-shm
 *.db-wal
 
-# End of https://www.toptal.com/developers/gitignore/api/database,c++
+# End of https://www.toptal.com/developers/gitignore/api/c++,cmake,database
