@@ -5,7 +5,7 @@ LFLAGS = -o
 OBJ_DIR = obj
 HEADS_DIR = headers
 SRC_DIR = src
-SRC = $(SRC_DIR)/gpa.cpp $(SRC_DIR)/main.cpp $(SRC_DIR)/student.cpp $(SRC_DIR)/uuid.cpp $(SRC_DIR)/database.cpp $(SRC_DIR)/school.cpp
+SRC = $(SRC_DIR)/gpa.cpp $(SRC_DIR)/main.cpp $(SRC_DIR)/student.cpp $(SRC_DIR)/uuid.cpp $(SRC_DIR)/database.cpp $(SRC_DIR)/school.cpp $(SRC_DIR)/menu.cpp
 
 OBJ = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC))
 
