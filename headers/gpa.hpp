@@ -5,6 +5,8 @@
 #include <iostream>
 #include <sqlite3.h>
 
+#include "database.hpp"
+
 class GPA{
 private:
     std::string studentId;
@@ -42,6 +44,7 @@ public:
     //OPERATOR
     friend std::ostream& operator<<(std::ostream& os, const GPA& obj);
     //METHODS
+    void save(Database db);
     double calculate_GPA();
 };
 std::ostream& operator<<(std::ostream& os, const GPA& obj);

@@ -27,4 +27,4 @@ run: main.exe sqlite3/sqlite
 	@./main.exe
 
 clean:
-	@rm main.exe $(OBJ)
+	@rm main.exe $(OBJ_DIR)/* tmp/*

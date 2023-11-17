@@ -26,7 +26,7 @@ std::ostream& operator<<(std::ostream& os, const School& obj){
 }
 
 void School::save(Database db){
-    std::string values = "("+this->schoolId+","+this->name+")";
-    std::string query="INSERT INTO School (schoolId, name,) VALUES "+values;
+    std::string values = "('"+this->schoolId+"','"+this->name+"')";
+    std::string query="INSERT INTO School (schoolId, name) VALUES "+values;
     db.request(query);
 }

@@ -2,7 +2,7 @@
 
 Database::Database(std::string path){
     this->path=path;
-    std::ofstream {path};
+    //std::ofstream {path};
 }
 
 void Database::create_tables(){
@@ -16,7 +16,7 @@ void Database::create_tables(){
     "firstName TEXT,"
     "lastName TEXT,"
     "schoolId TEXT,"
-    "FOREIGN KEY (schoolId) REFERENCE School (schoolId)"
+    "FOREIGN KEY (schoolId) REFERENCES School (schoolId)"
     ");";
     this->request(studentTable);
     std::string gpaTable="CREATE TABLE IF NOT EXISTS GPA("
@@ -25,17 +25,23 @@ void Database::create_tables(){
     "grade TEXT,"
     "credit TEXT,"
     "PRIMARY KEY(studentId, topic),"
-    "FOREIGN KEY (studentId) REFERENCE School (studentId)"
+    "FOREIGN KEY (studentId) REFERENCES School (studentId)"
     ");";
     this->request(gpaTable);
 }
 
 void Database::request(std::string query){
     int rc;
+    rc = sqlite3_open (this->path.c_str(),  &this->db);
+    if( rc ) {
+      fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+      exit(0);
+    } else {
+        fprintf(stdout, "Opened database successfully\n");
+    }
     sqlite3_stmt *request=0;
     rc=sqlite3_prepare_v2(this->db, query.c_str(), -1, &request, 0);
-    std::cout << rc << std::endl;
-    if (rc==SQLITE_OK || request == 0){
+    if (rc != SQLITE_OK || request == 0){
         std::cerr << "Impossible to execute the request on the student table " << sqlite3_errmsg(db) << std::endl;
         exit(1);
     }
