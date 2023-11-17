@@ -1,3 +1,6 @@
+#ifndef UUID_H
+#define UUID_H
+
 #include <random>
 #include <sstream>
 
@@ -8,3 +11,5 @@ namespace uuid{
     static std::uniform_int_distribution<> dis2(8, 11);
     std::string generate_uuid_v4();
 }
+
+#endif

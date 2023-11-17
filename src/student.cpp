@@ -42,3 +42,9 @@ void Student::setSchoolId(std::string schoolId){
 std::ostream& operator<<(std::ostream& os, const Student& obj){
     return os << "|" << obj.studentId << "|" << obj.lastName << "|" << obj.firstName << "|" << obj.schoolId << std::endl;
 }
+
+void Student::save(Database db){
+    std::string values = "("+this->studentId+","+this->firstName+","+this->lastName+","+this->schoolId+")";
+    std::string query="INSERT INTO Student (studentId, firstName, lastName, schoolId) VALUES "+values;
+    db.request(query);
+}

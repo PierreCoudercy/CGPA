@@ -1,8 +1,10 @@
 #ifndef DATABASE_H
 #define DATABASE_H
 
+#include "../sqlite3/sqlite3.h"
+#include <iostream>
+#include <fstream>
 #include <string>
-#include <sqlite3.h>
 
 class Database{
 
@@ -16,7 +18,9 @@ class Database{
         //SETTER
         //OPERATOR
         //METHODS
-        void execute_request(std::string request);
+        void create_tables();
+        void request(std::string query);
+        std::string request(std::string query, int expected_result);
 };
 
 #endif

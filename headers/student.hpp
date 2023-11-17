@@ -3,9 +3,9 @@
 
 #include <string>
 #include <iostream>
-#include <sqlite3.h>
 
 #include "uuid.hpp"
+#include "database.hpp"
 
 class Student{
     private:
@@ -29,6 +29,7 @@ class Student{
         //OPERATOR
         friend std::ostream& operator<<(std::ostream& os, const Student& obj);
         //METHODS
+        void save(Database db);
 };
 
 std::ostream& operator<<(std::ostream& os, const Student& obj);
