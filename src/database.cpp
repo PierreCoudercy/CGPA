@@ -1,8 +1,7 @@
-#include "../headers/database.hpp"
+#include "../include/database.hpp"
 
 Database::Database(std::string path){
     this->path=path;
-    //std::ofstream {path};
 }
 
 void Database::create_tables(){
@@ -16,7 +15,7 @@ void Database::create_tables(){
     "firstName TEXT,"
     "lastName TEXT,"
     "schoolId TEXT,"
-    "FOREIGN KEY (schoolId) REFERENCES School (schoolId)"
+    "FOREIGN KEY (schoolId) REFERENCES School (schoolId) ON DELETE CASCADE"
     ");";
     this->request(studentTable);
     std::string gpaTable="CREATE TABLE IF NOT EXISTS GPA("
@@ -25,7 +24,7 @@ void Database::create_tables(){
     "grade TEXT,"
     "credit TEXT,"
     "PRIMARY KEY(studentId, topic),"
-    "FOREIGN KEY (studentId) REFERENCES School (studentId)"
+    "FOREIGN KEY (studentId) REFERENCES School (studentId) ON DELETE CASCADE"
     ");";
     this->request(gpaTable);
 }
@@ -42,7 +41,7 @@ void Database::request(std::string query){
     sqlite3_stmt *request=0;
     rc=sqlite3_prepare_v2(this->db, query.c_str(), -1, &request, 0);
     if (rc != SQLITE_OK || request == 0){
-        std::cerr << "Impossible to execute the request on the student table " << sqlite3_errmsg(db) << std::endl;
+        std::cerr << "Impossible to execute the request on the table " << sqlite3_errmsg(db) << std::endl;
         exit(1);
     }
     rc=sqlite3_step(request);
@@ -58,22 +57,34 @@ void Database::request(std::string query){
     sqlite3_close(db);
 }
 
-std::string Database::request(std::string query, int expected_result){
+std::vector<std::vector<std::string>> Database::request(std::string query, int expected_result){
     int rc;
-    std::string result;
+    std::vector<std::vector<std::string>> result;
+    rc = sqlite3_open (this->path.c_str(),  &this->db);
+    if( rc ) {
+        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+        exit(0);
+    } else {
+        fprintf(stdout, "Opened database successfully\n");
+    }
     sqlite3_stmt *request=0;
     rc=sqlite3_prepare_v2(this->db, query.c_str(), -1, &request, 0);
-    if (rc==SQLITE_OK || request == 0){
-        std::cerr << "Impossible to execute the select request on the student table" << std::endl;
+    if (rc!=SQLITE_OK || request == 0){
+        std::cerr << "Impossible to execute the select request on the table " << sqlite3_errmsg(db) << std::endl;
         exit(1);
     }
-    rc=sqlite3_step(request);
-    if (rc==SQLITE_ROW){
+    do{
+        std::vector<std::string> tmp;
+        rc=sqlite3_step(request);
+        if (rc==SQLITE_ROW){
         for(int i=0; i<expected_result;i++){
-            result = result +" | "+reinterpret_cast<const char*>(sqlite3_column_text(request, 0));
+            tmp.push_back(reinterpret_cast<const char*>(sqlite3_column_text(request, i)));
         }
+        result.push_back(tmp);
     }
-    else if (rc==SQLITE_DONE){
+    }
+    while(rc == SQLITE_ROW);
+    if (rc==SQLITE_DONE){
         std::cerr << "No values where found for these parameters" << std::endl;
     }
     else{
@@ -83,4 +94,49 @@ std::string Database::request(std::string query, int expected_result){
     sqlite3_finalize(request);
     sqlite3_close(db);
     return result;
+}
+
+std::vector<std::vector<std::string>> Database::selectSchoolByName(std::string schoolName){
+    std::string query="SELECT * FROM School WHERE name='"+schoolName+"'";
+    std::vector<std::vector<std::string>> result=this->request(query, 2);
+    return result;
+}
+
+std::string Database::selectSchoolIdByName(std::string schoolName){
+    std::string query="SELECT schoolId FROM School WHERE name='"+schoolName+"'";
+    std::vector<std::vector<std::string>> result=this->request(query, 1);
+    return result[0][0];
+}
+
+void Database::deleteSchoolByName(std::string schoolName){
+    std::string query="DELETE FROM School WHERE name='"+schoolName+"'";
+    this->request(query);
+}
+
+std::vector<std::vector<std::string>> Database::selectStudentByName(std::string firstName, std::string lastName){
+    std::string query="SELECT * FROM Student WHERE firstName='"+firstName+"' AND lastName='"+lastName+"'";
+    std::vector<std::vector<std::string>> result=this->request(query, 4);
+    return result;
+}
+
+std::string Database::selectStudentIdByName(std::string firstName, std::string lastName){
+    std::string query="SELECT * FROM Student WHERE firstName='"+firstName+"' AND lastName='"+lastName+"'";
+    std::vector<std::vector<std::string>> result=this->request(query, 4);
+    return result[0][0];
+}
+
+void Database::deleteStudentByName(std::string firstName, std::string lastName){
+    std::string query="DELETE FROM Student WHERE firstName='"+firstName+"' AND lastName='"+lastName+"'";
+    this->request(query);
+}
+
+std::vector<std::vector<std::string>> Database::selectGPAByStudent(std::string studentId){
+    std::string query="SELECT * FROM GPA WHERE studentId='"+studentId+"'";
+    std::vector<std::vector<std::string>> result=this->request(query, 4);
+    return result;
+}
+
+void Database::deleteGPAByStudentTopic(std::string studentId, std::string topic){
+    std::string query="DELETE FROM GPA WHERE studenId='"+studentId+"' AND topic='"+topic+"'";
+    this->request(query);
 }

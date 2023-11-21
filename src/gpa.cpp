@@ -1,4 +1,6 @@
-#include "../headers/gpa.hpp"
+#include "../include/gpa.hpp"
+
+GPA::GPA(){}
 
 GPA::GPA(std::string studentId, std::string topic, std::string grade, double credit){
     this->studentId = studentId;
@@ -27,7 +29,15 @@ void GPA::save(Database db){
     db.request(query);
 }
 
-double GPA::calculate_GPA(){
-    double gradeValue = this->gradeToValue.find(this->grade)->second;
-    return (gradeValue*this->credit)/this->credit;
+double GPA::calculate_GPA(Database db, std::string studentId){
+    double cgpa=0;
+    double creditSum=0;
+    std::string query = "SELECT grade, credit from GPA where studentId='"+studentId+"'";
+    std::vector<std::vector<std::string>> result = db.request(query, 2);
+    for (std::vector<std::string> line : result){
+        cgpa=cgpa+(this->gradeToValue.find(line[0]))->second*(std::stod(line[1]));
+        creditSum=creditSum+(std::stod(line[1]));
+    }
+    cgpa=cgpa/creditSum;
+    return cgpa;
 }

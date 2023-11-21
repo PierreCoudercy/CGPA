@@ -1,26 +1,16 @@
 #include <iostream>
 #include <map>
 
-#include "../headers/gpa.hpp"
-#include "../headers/student.hpp"
-#include "../headers/school.hpp"
-#include "../headers/menu.hpp"
+#include "../include/gpa.hpp"
+#include "../include/student.hpp"
+#include "../include/school.hpp"
+#include "../include/menu.hpp"
 
 std::string DATABASE_PATH = "tmp/gpa.sqlite3";
 
 int main(){
-    Database d1(DATABASE_PATH);
-    // d1.create_tables();
-    // School s1("Harvard");
-    // s1.save(d1);
-    // Student st1("John","Do",s1.getSchoolId());
-    // st1.save(d1);
-    // GPA g1(st1.getStudentId(),"ALGEBRA","A+",5);
-    // g1.save(d1);
-    // GPA g2(st1.getStudentId(),"HISTORY","C",2);
-    // g2.save(d1);
-    // GPA g3(st1.getStudentId(),"PHYSICS","B+",3.5);
-    // g3.save(d1);
-    menu::main_menu();
+    Database db(DATABASE_PATH);
+    db.create_tables();
+    menu::main_menu(&db);
     return 0;
 }

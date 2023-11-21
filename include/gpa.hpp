@@ -30,6 +30,7 @@ private:
     };
 public:
     //CONSTRUCTOR
+    GPA();
     GPA(std::string studentId, std::string topic, std::string grade, double credit);
     //GETTER
     std::string getStudentId();
@@ -45,7 +46,7 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const GPA& obj);
     //METHODS
     void save(Database db);
-    double calculate_GPA();
+    double calculate_GPA(Database db, std::string studentId);
 };
 std::ostream& operator<<(std::ostream& os, const GPA& obj);
 

@@ -6,6 +6,7 @@
 
 #include "uuid.hpp"
 #include "database.hpp"
+class Database;
 
 class School{
 

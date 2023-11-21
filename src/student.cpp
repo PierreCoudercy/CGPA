@@ -1,4 +1,4 @@
-#include "../headers/student.hpp"
+#include "../include/student.hpp"
 
 Student::Student(std::string firstName, std::string lastName, std::string schoolId){
     this->firstName=firstName;
@@ -44,6 +44,11 @@ std::ostream& operator<<(std::ostream& os, const Student& obj){
 }
 
 void Student::save(Database db){
+    std::vector<std::vector<std::string>> studentExist = db.selectStudentByName(firstName, lastName);
+    if (!studentExist.empty()){
+        std::cout << "The student named " << firstName << lastName << " already exist." << std::endl;
+        return;
+    }
     std::string values = "('"+this->studentId+"','"+this->firstName+"','"+this->lastName+"','"+this->schoolId+"')";
     std::string query="INSERT INTO Student (studentId, firstName, lastName, schoolId) VALUES "+values;
     db.request(query);
