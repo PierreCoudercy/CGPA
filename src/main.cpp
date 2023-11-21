@@ -6,10 +6,10 @@
 #include "../headers/school.hpp"
 #include "../headers/menu.hpp"
 
-//std::string DATABASE_PATH;
+std::string DATABASE_PATH = "tmp/gpa.sqlite3";
 
 int main(){
-    Database d1("tmp/gpa.sqlite3");
+    Database d1(DATABASE_PATH);
     // d1.create_tables();
     // School s1("Harvard");
     // s1.save(d1);
